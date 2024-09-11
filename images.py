@@ -1,3 +1,4 @@
+"""Script para extrair estatísticas de imagens de um banco de dados SQL Server e gerar um relatório de profiling."""
 import pandas as pd
 import numpy as np
 from PIL import Image

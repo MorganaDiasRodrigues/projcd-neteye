@@ -1,4 +1,4 @@
-
+"""Script para extrair estatísticas de imagens de um banco de dados SQL Server e gerar um relatório de profiling."""
 import pyodbc
 import pandas as pd
 from ydata_profiling import ProfileReport
