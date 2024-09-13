@@ -1,1 +1,0 @@
-"""Criação do modelo de CLIP"""
