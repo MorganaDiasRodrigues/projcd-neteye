@@ -20,52 +20,39 @@ connection_string = (
 )
 
 try:
-    # Estabelecer conexão com o banco de dados
-    connection = pyodbc.connect(connection_string)
-    print("Conexão bem-sucedida!")
-    
-    # Criação do cursor
-    cursor = connection.cursor()
 
-    # Buscar os nomes de todas as tabelas
-    query_tables = """
-    SELECT TABLE_NAME 
-    FROM INFORMATION_SCHEMA.TABLES 
-    WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = ?
-    """
-    cursor.execute(query_tables, database)
-    tables = cursor.fetchall()
+    try:
+        connection = pyodbc.connect(connection_string)
+        print("Conexão bem-sucedida!")
+        
+        table_name = 'fALERTAS_SEGURANCA'
 
-    # Para cada tabela, faça a consulta e passe para pandas profiling
-    for table in tables:
-        table_name = table[0]
+        # Criação do cursor
+        cursor = connection.cursor()
+        #query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'"
+        query = f"SELECT * FROM {database}.bi.{table_name}"
+        df = pd.read_sql(query, connection)
+
+        print(table_name)
+        print(df)
+        print(df.info())
+        cols_to_convert = ['DT_ACESSO', 'TP_ALERTA', 'DS_TITULO','DS_ALERTA','SQ_USUARIO','SQ_ESTACAO','NM_ARQUIVO','NM_DOMINIO']
+        df[cols_to_convert] = df[cols_to_convert].astype(str)
+        print(df.info())
+
+        # Gerar o relatório de profiling para o DataFrame selecionado
         try:
-            connection = pyodbc.connect(connection_string)
-            print("Conexão bem-sucedida!")
-            
-            # Criação do cursor
-            cursor = connection.cursor()
-            print(table_name)
-            query = f"SELECT * FROM {database}.dbo.{table_name}"
-            df = pd.read_sql(query, connection)
-            
-            # Gerar o relatório de profiling para o DataFrame
-            profile = ProfileReport(df, title=f"Relatório da tabela {table_name}", explorative=True)
+            profile = ProfileReport(df, title=f"Relatório {table_name}", explorative=True)
             profile.to_file(f"reports/{table_name}_report.html")
-            print(f"Relatório da tabela {table_name} gerado com sucesso.")
-
+            print(f"Relatório gerado com sucesso.")
         except Exception as e:
-            try:
-                query = f"SELECT * FROM {database}.bi.{table_name}"
-                df = pd.read_sql(query, connection)
-                
-                # Gerar o relatório de profiling para o DataFrame
-                profile = ProfileReport(df, title=f"Relatório da tabela {table_name}", explorative=True)
-                profile.to_file(f"tables_reports/{table_name}_report.html")
-                print(f"Relatório da tabela {table_name} gerado com sucesso.")
-            except Exception as inner_e:
-                print(f"Erro ao processar a tabela {table_name}: {inner_e}")
-                pass
+            print(f"Erro ao processar relatório: {e}")
+
+    except Exception as e:
+        print(f"Erro ao processar a tabela {table_name}: {e}")
+
+except Exception as e:
+        print(f"Erro ao processar: {e}")
 
 finally:
     # Fechar conexão
