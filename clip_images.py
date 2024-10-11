@@ -7,16 +7,18 @@ import pyodbc
 from sqlalchemy import create_engine
 
 # Parte onde você conecta no banco SQL Server que você criou
-server = 'NOTEBOOK' 
-database = "neteye_pucrs"
+server = '45.7.171.233,51433' 
+database = 'neteye_pucrs_full'
+username = 'neteye_pucrs'
+password = '1goE$6G^3Ng6!dKZ'
 
 
-# String de conexão
 connection_string = (
     f'DRIVER={{ODBC Driver 18 for SQL Server}};'
     f'SERVER={server};'
     f'DATABASE={database};'
-    'Trusted_Connection=yes;'
+    f'UID={username};'
+    f'PWD={password};'
     'TrustServerCertificate=yes;'
 )
 

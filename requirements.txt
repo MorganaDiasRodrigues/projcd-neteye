@@ -1,0 +1,7 @@
+pandas
+torch
+transformers
+pillow
+pyodbc
+sqlalchemy
+ydata_profiling
