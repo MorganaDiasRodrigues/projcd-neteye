@@ -11,16 +11,18 @@ from ydata_profiling import ProfileReport
 import pyodbc
 
 # Parte onde você conecta no banco SQL Server que você criou
-server = 'NOTEBOOK' 
-database = "neteye_pucrs"
+server = '45.7.171.233,51433' 
+database = 'neteye_pucrs_full'
+username = 'neteye_pucrs'
+password = '1goE$6G^3Ng6!dKZ'
 
 
-# String de conexão
 connection_string = (
     f'DRIVER={{ODBC Driver 18 for SQL Server}};'
     f'SERVER={server};'
     f'DATABASE={database};'
-    'Trusted_Connection=yes;'
+    f'UID={username};'
+    f'PWD={password};'
     'TrustServerCertificate=yes;'
 )
 
@@ -33,7 +35,7 @@ try:
 
     query  = f"SELECT * FROM {database}.dbo.{tabela}"
 
-    df = pd.read_sql(query, connection)
+    df = pd.read_sql(query, connection, params=[database])
 
     # Função para extrair as estatísticas de uma imagem
     def extrair_estatisticas_imagem(imagem):
@@ -115,4 +117,5 @@ except Exception as e:
             
         except Exception as inner_e:
             print(f"Erro ao processar a tabela {tabela}: {inner_e}")
+            print('aquiiiia')
             pass

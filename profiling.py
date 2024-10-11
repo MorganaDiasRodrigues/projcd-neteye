@@ -4,16 +4,18 @@ import pandas as pd
 from ydata_profiling import ProfileReport
 
 # Parte onde você conecta no banco SQL Server que você criou
-server = 'NOTEBOOK' 
-database = "neteye_pucrs"
+server = '45.7.171.233,51433' 
+database = 'neteye_pucrs_full'
+username = 'neteye_pucrs'
+password = '1goE$6G^3Ng6!dKZ'
 
 
-# String de conexão
 connection_string = (
     f'DRIVER={{ODBC Driver 18 for SQL Server}};'
     f'SERVER={server};'
     f'DATABASE={database};'
-    'Trusted_Connection=yes;'
+    f'UID={username};'
+    f'PWD={password};'
     'TrustServerCertificate=yes;'
 )
 
@@ -49,7 +51,7 @@ try:
             
             # Gerar o relatório de profiling para o DataFrame
             profile = ProfileReport(df, title=f"Relatório da tabela {table_name}", explorative=True)
-            profile.to_file(f"{table_name}_report.html")
+            profile.to_file(f"reports/{table_name}_report.html")
             print(f"Relatório da tabela {table_name} gerado com sucesso.")
 
         except Exception as e:

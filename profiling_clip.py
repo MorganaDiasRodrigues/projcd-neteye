@@ -1,0 +1,11 @@
+from ydata_profiling import ProfileReport
+import pandas as pd
+
+# Substitua 'seu_arquivo.csv' pelo caminho para o seu arquivo CSV
+df = pd.read_csv('clip_results.csv')
+
+# Crie o relatório
+profile = ProfileReport(df, title="Relatório de Profiling", explorative=True)
+
+# Salve o relatório em um arquivo HTML
+profile.to_file("reports/clip_relatorio_profiling.html")
