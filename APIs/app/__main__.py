@@ -1,6 +1,4 @@
 import uvicorn
-
-from .dependencies.logging import get_logger_config
 from .settings import Settings
 
 
@@ -13,10 +11,6 @@ def main() -> None:
         port=settings.PORT,
         reload=settings.RELOAD,
         workers=settings.WORKERS,
-        log_config=get_logger_config(),
-        use_colors=True,
-        proxy_headers=True,
-        forwarded_allow_ips="*",
     )
 
 
